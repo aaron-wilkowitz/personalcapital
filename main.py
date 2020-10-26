@@ -34,6 +34,9 @@ class PewCapital(PersonalCapital):
         with open(self.__session_file, 'w') as data_file:
             data_file.write(json.dumps(self.get_session()))
 
+os.environ["PEW_EMAIL"] = "aaron.wilkowitz@gmail.com"
+os.environ["PEW_PASSWORD"] = "uncasl55"
+
 def get_email():
     email = os.getenv('PEW_EMAIL')
     if not email:
