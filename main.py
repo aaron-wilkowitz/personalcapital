@@ -34,6 +34,7 @@ class PewCapital(PersonalCapital):
         with open(self.__session_file, 'w') as data_file:
             data_file.write(json.dumps(self.get_session()))
 
+## test 2234
 os.environ["PEW_EMAIL"] = "aaron.wilkowitz@gmail.com"
 os.environ["PEW_PASSWORD"] = "uncasl55"
 
@@ -62,29 +63,50 @@ def main():
         pc.two_factor_authenticate(TwoFactorVerificationModeEnum.SMS, input('code: '))
         pc.authenticate_password(password)
 
-    accounts_response = pc.fetch('/newaccount/getAccounts')
-    
-    now = datetime.now()
-    date_format = '%Y-%m-%d'
-    days = 90
-    start_date = (now - (timedelta(days=days+1))).strftime(date_format)
-    end_date = (now - (timedelta(days=1))).strftime(date_format)
-    transactions_response = pc.fetch('/transaction/getUserTransactions', {
-        'sort_cols': 'transactionTime',
-        'sort_rev': 'true',
-        'page': '0',
-        'rows_per_page': '100',
-        'startDate': start_date,
-        'endDate': end_date,
-        'component': 'DATAGRID'
-    })
-    pc.save_session()
 
-    accounts = accounts_response.json()['spData']
-    print('Networth: {0}'.format(accounts['networth']))
+    holdings_response = pc.fetch('/invest/getHoldings')
 
-    transactions = transactions_response.json()['spData']
-    print('Number of transactions between {0} and {1}: {2}'.format(transactions['startDate'], transactions['endDate'], len(transactions['transactions'])))
+    holdings_xyz = holdings_response.json()['spData']
+ 
+    number_holdings = len(holdings_xyz['holdings'])
+
+    for x in range(0,number_holdings):
+        print(
+                holdings_xyz['holdings'][(x)]['accountName'], '|'
+            ,   holdings_xyz['holdings'][(x)]['description'], '|'
+            # ,   holdings_xyz['holdings'][(x)]['type'], '|'
+            ,   holdings_xyz['holdings'][(x)]['price'], '|'
+            ,   holdings_xyz['holdings'][(x)]['value'], '|'
+            # ,   holdings_xyz['holdings'][(x)]['fundFees'], '|'
+            # ,   holdings_xyz['holdings'][(x)]['originalDescription'], '|'
+            ,   holdings_xyz['holdings'][(x)]['quantity'], '|'
+            # ,   holdings_xyz['holdings'][(x)]['feesPerYear'], '|'
+            ,   holdings_xyz['holdings'][(x)]['external']
+        )
 
 if __name__ == '__main__':
     main()
+
+    # accounts_response = pc.fetch('/newaccount/getAccounts')
+    
+    # now = datetime.now()
+    # date_format = '%Y-%m-%d'
+    # days = 90
+    # start_date = (now - (timedelta(days=days+1))).strftime(date_format)
+    # end_date = (now - (timedelta(days=1))).strftime(date_format)
+    # transactions_response = pc.fetch('/transaction/getUserTransactions', {
+    #     'sort_cols': 'transactionTime',
+    #     'sort_rev': 'true',
+    #     'page': '0',
+    #     'rows_per_page': '100',
+    #     'startDate': start_date,
+    #     'endDate': end_date,
+    #     'component': 'DATAGRID'
+    # })
+    # pc.save_session()
+
+    # accounts = accounts_response.json()['spData']
+    # print('Networth: {0}'.format(accounts['networth']))
+
+    # transactions = transactions_response.json()['spData']
+    # print('Number of transactions between {0} and {1}: {2}'.format(transactions['startDate'], transactions['endDate'], len(transactions['transactions'])))
