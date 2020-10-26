@@ -35,6 +35,9 @@ class PewCapital(PersonalCapital):
             data_file.write(json.dumps(self.get_session()))
 
 # test 2f asdfa s
+# asdlfkjasdlfjkas 
+# asdlfkjasdlfjkas 
+# asdlfkjasdlfjkas 
 os.environ["PEW_EMAIL"] = "aaron.wilkowitz@gmail.com"
 os.environ["PEW_PASSWORD"] = "uncasl55"
 
